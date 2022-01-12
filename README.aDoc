@@ -1,0 +1,320 @@
+= Common Solidity Access Vectors in ink!
+Achim Schneider <achim@parity.io>
+0.1, January 5, 2022: AsciiDoc article template
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+Content entered directly below the header but before the first section heading is called the preamble.
+
+== SWC Classification Vectors
+
+.Table title
+[cols="^10h,24h,^5h,~"]
+|====
+|ID |title | ink! | Description
+
+|https://swcregistry.io/docs/SWC-100[SWC-100]
+|Function Default visibility
+|++
+|Functions in ink!/Rust are private by default 
+
+|https://swcregistry.io/docs/SWC-101[SWC-101]
+|Integer Overflow and Underflow
+|++
+|Can be prevented by setting `overflow-checks = true` in Cargo.toml 
+
+|https://swcregistry.io/docs/SWC-102[SWC-102]
+|Outdated Compiler Version
+|o
+|Can happen in ink! too
+
+|https://swcregistry.io/docs/SWC-103[SWC-103]
+|Floating Pragma
+|o
+|(?) ink! dependencies can have floating versions
+
+|https://swcregistry.io/docs/SWC-104[SWC-104]
+|Unchecked Call Return Value
+|+
+|Cargo contract throws a warning in case of unused return value of a function. (?) do we have low-level system calls comparable to Solidity?
+
+|https://swcregistry.io/docs/SWC-105[SWC-105]
+|Unprotected Ether Withdrawal
+|+
+|Methods on ink! Smart Contract are private by default. (?) We don't have modifiers in ink!, so we can't forget to assign them to a method.
+
+|https://swcregistry.io/docs/SWC-106[SWC-106]
+|Unprotected SELFDESTRUCT Instruction
+|o
+|We can self-destruct an ink! Smart Contract by calling `self.env().terminate_contract()`. But it is much less likely to gain unauthorized access to this method in an ink! Smart Contract compared to Solidity.
+
+|https://swcregistry.io/docs/SWC-107[SWC-107]
+|Reentrancy
+|++
+|In ink!, we can define the analogy of a Solidity fallback function by assigning an ink! function the wildcard selector. -> Needs further explanation.
+
+|https://swcregistry.io/docs/SWC-108[SWC-108]
+|State Variable Default Visibility
+|++
+|All variables are private by default in ink!/Rust
+
+|https://swcregistry.io/docs/SWC-109[SWC-109]
+|Uninitialized Storage Pointer
+|++
+|Uninitialized variables can be accessed/used in Rust (however, this attack vector was removed with Solidity 0.5.0 by making contracts with uninitialized storage pointers no longer compile).
+
+|https://swcregistry.io/docs/SWC-110[SWC-110]
+|Assert Violation
+|?
+|We have `assert!`` and `ensure!`` macros in ink! Equivalent to `assert` and `require` in Solidity?
+
+|https://swcregistry.io/docs/SWC-111[SWC-111]
+|Use of Deprecated Solidity Functions
+|?
+|Should not be possible in ink!, or compiler should at least throw a warning(?)
+
+|https://swcregistry.io/docs/SWC-112[SWC-112]
+|Delegatecall to Untrusted Callee
+|o
+|We have `ink_env::call::build_call::<ink_env::DefaultEnvironment>()` in ink!, calling into untrusted code should be voided here as well(?)
+
+|https://swcregistry.io/docs/SWC-113[SWC-113]
+|DoS with Failed Call
+|?
+|(?)Unclear what happens with ink! contract Pallet in case of DOS attacks
+
+|https://swcregistry.io/docs/SWC-114[SWC-114]
+|Transaction Order Dependence
+|o
+|Race conditions can be an issue in ink! Smart contracts too (?)
+
+|https://swcregistry.io/docs/SWC-115[SWC-115]
+|Authorization through tx.origin
+|++
+|ink! doesn't expose the origin of a transaction, only the direct caller through `ink.env().caller()`
+
+|https://swcregistry.io/docs/SWC-116[SWC-116]
+|Block values as a proxy for time
+|o+(?)
+|Maybe (?) slightly better then Etehreum but beyond https://blog.unifiedh.com/on-decentralized-clocks-how-time-became-the-biggest-security-threat-on-blockchain-systems-8a7e13622bb0[Tendermint]
+
+|https://swcregistry.io/docs/SWC-117[SWC-117]
+|Signature Malleability
+|
+|
+
+|https://swcregistry.io/docs/SWC-118[SWC-118]
+|Incorrect Constructor Name
+|++
+|Constructors in ink! must be explicitly flagged with `#[ink(constructor)]`
+
+|https://swcregistry.io/docs/SWC-119[SWC-119]
+|Shadowing State Variables
+|+
+|All state variables need to be stored in the storage struct and there can only be one storage struct per contract. They can then be accessed by `self.variable_name` which makes it unlikely to confuse them with local variables.
+
+|https://swcregistry.io/docs/SWC-120[SWC-120]
+|Weak Sources of Randomness from Chain Attributes
+|(?)o
+|Not sure about randomness in ink!/Substrate being more secure?
+
+|https://swcregistry.io/docs/SWC-121[SWC-121]
+|Missing Protection against Signature Replay Attacks
+|(?)o
+|Can be problematic ink! as well (?)
+
+|https://swcregistry.io/docs/SWC-122[SWC-122]
+|Lack of Proper Signature Verification
+|(?)o
+|Can be problematic ink! as well (?)
+
+|https://swcregistry.io/docs/SWC-123[SWC-123]
+|Requirement Violation
+|?
+|Not clear if we have analogy of `assert` and `require` in ink!
+
+|https://swcregistry.io/docs/SWC-124[SWC-124]
+|Write to Arbitrary Storage Location
+|++
+|Rust/ink! is a memory safe language, writing to an arbitrary location in storage is not possible
+
+|https://swcregistry.io/docs/SWC-125[SWC-125]
+|Incorrect Inheritance Order
+|(?)+
+|ink!/Rust has no inheritance but traits. 
+
+|https://swcregistry.io/docs/SWC-126[SWC-126]
+|
+|
+|
+
+|https://swcregistry.io/docs/SWC-127[SWC-127]
+|Arbitrary Jump with Function Type Variable
+|(?)+
+|We don't have function type variables in ink! Neither assembly code. Can we execute unsafe code?
+
+|https://swcregistry.io/docs/SWC-128[SWC-128]
+|Typographical Error
+|+
+|Not possible in ink!/Rust, no unary `+` operator.
+
+|https://swcregistry.io/docs/SWC-129[SWC-129]
+|
+|
+|
+
+|https://swcregistry.io/docs/SWC-130[SWC-130]
+|
+|
+|
+
+|https://swcregistry.io/docs/SWC-130[SWC-131]
+|Presence of unused variables
+|+
+|Cargo contract throws a warning when compiling an ink! Smart Contract with unused variables.
+
+|https://swcregistry.io/docs/SWC-130[SWC-132]
+|Unexpected Ether balance
+|++
+|It is not possible to forcibly send a balance to a ink! Smart Contract
+
+|https://swcregistry.io/docs/SWC-130[SWC-133]
+|Hash Collisions With Multiple Variable Length Arguments
+|+
+|The ink! env functions `hash_bytes` and `hash_encoded` can receive only on array as input which creates a better awareness of the issue.
+
+|https://swcregistry.io/docs/SWC-130[SWC-134]
+|Message call with hardcoded gas amount
+|
+|
+
+|https://swcregistry.io/docs/SWC-130[SWC-135]
+|Code With No Effects
+|+
+|Cargo contract/ink! throws a warning when compiling effect-free code.
+
+|https://swcregistry.io/docs/SWC-130[SWC-136]
+|Unencrypted Private Data On-Chain
+|o
+|Applies to ink! as well.
+
+|====
+
+=== SWC-101
+
+== Solidity Security Blog
+
+1. https://github.com/sigp/solidity-security-blog#reentrancy[Re-Entrancy]
+
+- In ink!, we can define the analogy of a Solidity fallback function by assigning an ink! function the wildcard selector. See https://github.com/paritytech/ink/blob/master/examples/proxy/lib.rs#L61-L71[proxy example contract] for an example in ink!  
+
+2. https://github.com/sigp/solidity-security-blog#ouflow[Arithmetic Over/Under Flows]
+
+- Can be prevented in ink! by setting `overflow-checks = true` in the contracts Cargo.toml 
+
+3. https://github.com/sigp/solidity-security-blog#ether[Unexpected Ether]
+
+- In ink! contracts are not called when only balance is sent to them without an associated function call.
+
+4. https://github.com/sigp/solidity-security-blog#delegatecall[Delegatecall]
+
+- We do have delegate calls in ink! but they are more secure by design. -> Add more explanation!
+
+
+5. https://github.com/sigp/solidity-security-blog#visibility[Default Visibilities]
+
+- In ink!, all functions of a Smart Contract are private by default while they are public by default in Solidity. Additionally, callable functions must be flagged explicitly with the `#[ink(message)]` attribute, which makes them available to the API. 
+
+6. https://github.com/sigp/solidity-security-blog#entropy[Entropy Illusion]
+
+- ink! language provides https://paritytech.github.io/ink/ink_env/fn.random.html[ink_env::random]
+- Seems to have some issues too?
+
+7. https://github.com/sigp/solidity-security-blog#contract-reference[External Contract Referencing]
+
+8. https://github.com/sigp/solidity-security-blog#short-address[Short Address/Parameter Attack]
+
+9. https://github.com/sigp/solidity-security-blog#unchecked-calls[Unchecked CALL Return Values]
+
+10. Race Conditions / Front Running
+
+11. Denial Of Service (DOS)
+
+12. Block Timestamp Manipulation
+
+13. Constructors with Care
+
+14. Uninitialised Storage Pointers
+
+15. Floating Points and Numerical Precision
+
+16. tx.origin Authentication
+
+.Image caption
+image::image-file-name.png[I am the image alt text.]
+
+This is another paragraph.footnote:[I am footnote text and will be displayed at the bottom of the article.]
+
+=== Second level heading
+
+.Unordered list title
+* list item 1
+** nested list item
+*** nested nested list item 1
+*** nested nested list item 2
+* list item 2
+
+This is a paragraph.
+
+.Example block title
+====
+Content in an example block is subject to normal substitutions.
+====
+
+.Sidebar title
+****
+Sidebars contain aside text and are subject to normal substitutions.
+****
+
+==== Third level heading
+
+[#id-for-listing-block]
+.Listing block title
+----
+Content in a listing block is subject to verbatim substitutions.
+Listing block content is commonly used to preserve code input.
+----
+
+===== Fourth level heading
+
+====== Fifth level heading
+
+[quote, firstname lastname, movie title]
+____
+I am a block quote or a prose excerpt.
+I am subject to normal substitutions.
+____
+
+[verse, firstname lastname, poem title and more]
+____
+I am a verse block.
+  Indents and endlines are preserved in verse blocks.
+____
+
+== First level heading
+
+TIP: There are five admonition labels: Tip, Note, Important, Caution and Warning.
+
+// I am a comment and won't be rendered.
+
+. ordered list item
+.. nested ordered list item
+. ordered list item
+
+The text at the end of this sentence is cross referenced to <<_third_level_heading,the third level heading>>
+
+== First level heading
+
+This is a link to the https://docs.asciidoctor.org/home/[Asciidoctor documentation].
+This is an attribute reference {url-quickref}[that links this text to the AsciiDoc Syntax Quick Reference].
