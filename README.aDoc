@@ -17,17 +17,17 @@ Content entered directly below the header but before the first section heading i
 |https://swcregistry.io/docs/SWC-100[SWC-100]
 |Function Default visibility
 |++
-|Functions in ink!/Rust are private by default 
+|Functions in ink!/Rust are private by default. 
 
 |https://swcregistry.io/docs/SWC-101[SWC-101]
 |Integer Overflow and Underflow
 |++
-|Can be prevented by setting `overflow-checks = true` in Cargo.toml 
+|Can be prevented in Rust/ink! by setting `overflow-checks = true` in Cargo.toml 
 
 |https://swcregistry.io/docs/SWC-102[SWC-102]
 |Outdated Compiler Version
-|o
-|Can happen in ink! too
+|+
+|With up-to-date ink! dependencies, it should not be possible to use an outdated toolchain for compilation(?). However, it would be possible to use outdated ink! dependencies in Cargo.toml
 
 |https://swcregistry.io/docs/SWC-103[SWC-103]
 |Floating Pragma
@@ -46,13 +46,13 @@ Content entered directly below the header but before the first section heading i
 
 |https://swcregistry.io/docs/SWC-106[SWC-106]
 |Unprotected SELFDESTRUCT Instruction
-|o
+|o+
 |We can self-destruct an ink! Smart Contract by calling `self.env().terminate_contract()`. But it is much less likely to gain unauthorized access to this method in an ink! Smart Contract compared to Solidity.
 
 |https://swcregistry.io/docs/SWC-107[SWC-107]
 |Reentrancy
-|++
-|In ink!, we can define the analogy of a Solidity fallback function by assigning an ink! function the wildcard selector. -> Needs further explanation.
+|+
+|The classic attack vector in Solidity Smart Contracts is a malicious Smart Contract which receives Ether from the attacked contract. Due to this receival, its fallback function gets executed within the execution context of the attacked contract, exposing its internals there. Since ink! doesn't allow sending tokens directly, this isn't an issue in ink! Smart contracts. 
 
 |https://swcregistry.io/docs/SWC-108[SWC-108]
 |State Variable Default Visibility
@@ -76,8 +76,8 @@ Content entered directly below the header but before the first section heading i
 
 |https://swcregistry.io/docs/SWC-112[SWC-112]
 |Delegatecall to Untrusted Callee
-|o
-|We have `ink_env::call::build_call::<ink_env::DefaultEnvironment>()` in ink!, calling into untrusted code should be voided here as well(?)
+|+
+|In ink!, we can define the analogy of a Solidity fallback function by assigning an ink! function the wildcard selector. We have `ink_env::call::build_call::<ink_env::DefaultEnvironment>()` in ink!, calling into untrusted code should be voided here as well. However, we have much more control over the delegate call setup.
 
 |https://swcregistry.io/docs/SWC-113[SWC-113]
 |DoS with Failed Call
@@ -97,7 +97,7 @@ Content entered directly below the header but before the first section heading i
 |https://swcregistry.io/docs/SWC-116[SWC-116]
 |Block values as a proxy for time
 |o+(?)
-|Maybe (?) slightly better then Etehreum but beyond https://blog.unifiedh.com/on-decentralized-clocks-how-time-became-the-biggest-security-threat-on-blockchain-systems-8a7e13622bb0[Tendermint]
+|Maybe (?) slightly https://blog.unifiedh.com/on-decentralized-clocks-how-time-became-the-biggest-security-threat-on-blockchain-systems-8a7e13622bb0[better] then Ethereum but beyond https://docs.tendermint.com/master/spec/consensus/bft-time.html[Tendermint] 
 
 |https://swcregistry.io/docs/SWC-117[SWC-117]
 |Signature Malleability
@@ -241,7 +241,10 @@ Content entered directly below the header but before the first section heading i
 
 11. Denial Of Service (DOS)
 
-12. Block Timestamp Manipulation
+12. https://github.com/sigp/solidity-security-blog#block-timestamp[Block Timestamp Manipulation]
+- We don't have a time consensus mechanism in Substrate
+- Timestamps still might be a bit more reliable in Substrate, check https://blog.unifiedh.com/on-decentralized-clocks-how-time-became-the-biggest-security-threat-on-blockchain-systems-8a7e13622bb0[here].
+- (?) Is there another source for time in Substrate/ink! besides block timestamp?
 
 13. Constructors with Care
 
