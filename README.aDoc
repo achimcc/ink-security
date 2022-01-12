@@ -10,191 +10,191 @@ Content entered directly below the header but before the first section heading i
 == SWC Classification Vectors
 
 .Table title
-[cols="^10h,24h,^5h,~"]
+[cols="^5h,24h,^5h,~"]
 |====
-|ID |title | ink! | Description
+|SWC ID |title | ink! | Description
 
-|https://swcregistry.io/docs/SWC-100[SWC-100]
+|https://swcregistry.io/docs/SWC-100[100]
 |Function Default visibility
 |++
 |Functions in ink!/Rust are private by default. 
 
-|https://swcregistry.io/docs/SWC-101[SWC-101]
+|https://swcregistry.io/docs/SWC-101[101]
 |Integer Overflow and Underflow
 |++
 |Can be prevented in Rust/ink! by setting `overflow-checks = true` in Cargo.toml 
 
-|https://swcregistry.io/docs/SWC-102[SWC-102]
+|https://swcregistry.io/docs/SWC-102[102]
 |Outdated Compiler Version
 |+
 |With up-to-date ink! dependencies, it should not be possible to use an outdated toolchain for compilation(?). However, it would be possible to use outdated ink! dependencies in Cargo.toml
 
-|https://swcregistry.io/docs/SWC-103[SWC-103]
+|https://swcregistry.io/docs/SWC-103[103]
 |Floating Pragma
 |o
 |(?) ink! dependencies can have floating versions
 
-|https://swcregistry.io/docs/SWC-104[SWC-104]
+|https://swcregistry.io/docs/SWC-104[104]
 |Unchecked Call Return Value
 |+
 |Cargo contract throws a warning in case of unused return value of a function. (?) do we have low-level system calls comparable to Solidity?
 
-|https://swcregistry.io/docs/SWC-105[SWC-105]
+|https://swcregistry.io/docs/SWC-105[105]
 |Unprotected Ether Withdrawal
 |+
 |Methods on ink! Smart Contract are private by default. (?) We don't have modifiers in ink!, so we can't forget to assign them to a method.
 
-|https://swcregistry.io/docs/SWC-106[SWC-106]
+|https://swcregistry.io/docs/SWC-106[106]
 |Unprotected SELFDESTRUCT Instruction
 |o+
 |We can self-destruct an ink! Smart Contract by calling `self.env().terminate_contract()`. But it is much less likely to gain unauthorized access to this method in an ink! Smart Contract compared to Solidity.
 
-|https://swcregistry.io/docs/SWC-107[SWC-107]
+|https://swcregistry.io/docs/SWC-107[107]
 |Reentrancy
 |+
 |The classic attack vector in Solidity Smart Contracts is a malicious Smart Contract which receives Ether from the attacked contract. Due to this receival, its fallback function gets executed within the execution context of the attacked contract, exposing its internals there. Since ink! doesn't allow sending tokens directly, this isn't an issue in ink! Smart contracts. 
 
-|https://swcregistry.io/docs/SWC-108[SWC-108]
+|https://swcregistry.io/docs/SWC-108[108]
 |State Variable Default Visibility
 |++
 |All variables are private by default in ink!/Rust
 
-|https://swcregistry.io/docs/SWC-109[SWC-109]
+|https://swcregistry.io/docs/SWC-109[109]
 |Uninitialized Storage Pointer
 |++
 |Uninitialized variables can be accessed/used in Rust (however, this attack vector was removed with Solidity 0.5.0 by making contracts with uninitialized storage pointers no longer compile).
 
-|https://swcregistry.io/docs/SWC-110[SWC-110]
+|https://swcregistry.io/docs/SWC-110[110]
 |Assert Violation
 |?
 |We have `assert!`` and `ensure!`` macros in ink! Equivalent to `assert` and `require` in Solidity?
 
-|https://swcregistry.io/docs/SWC-111[SWC-111]
+|https://swcregistry.io/docs/SWC-111[111]
 |Use of Deprecated Solidity Functions
 |?
 |Should not be possible in ink!, or compiler should at least throw a warning(?)
 
-|https://swcregistry.io/docs/SWC-112[SWC-112]
+|https://swcregistry.io/docs/SWC-112[112]
 |Delegatecall to Untrusted Callee
 |+
 |In ink!, we can define the analogy of a Solidity fallback function by assigning an ink! function the wildcard selector. We have `ink_env::call::build_call::<ink_env::DefaultEnvironment>()` in ink!, calling into untrusted code should be voided here as well. However, we have much more control over the delegate call setup.
 
-|https://swcregistry.io/docs/SWC-113[SWC-113]
+|https://swcregistry.io/docs/SWC-113[113]
 |DoS with Failed Call
 |?
 |(?)Unclear what happens with ink! contract Pallet in case of DOS attacks
 
-|https://swcregistry.io/docs/SWC-114[SWC-114]
+|https://swcregistry.io/docs/SWC-114[114]
 |Transaction Order Dependence
 |o
 |Race conditions can be an issue in ink! Smart contracts too (?)
 
-|https://swcregistry.io/docs/SWC-115[SWC-115]
+|https://swcregistry.io/docs/SWC-115[115]
 |Authorization through tx.origin
 |++
 |ink! doesn't expose the origin of a transaction, only the direct caller through `ink.env().caller()`
 
-|https://swcregistry.io/docs/SWC-116[SWC-116]
+|https://swcregistry.io/docs/SWC-116[116]
 |Block values as a proxy for time
 |o+(?)
 |Maybe (?) slightly https://blog.unifiedh.com/on-decentralized-clocks-how-time-became-the-biggest-security-threat-on-blockchain-systems-8a7e13622bb0[better] then Ethereum but beyond https://docs.tendermint.com/master/spec/consensus/bft-time.html[Tendermint] 
 
-|https://swcregistry.io/docs/SWC-117[SWC-117]
+|https://swcregistry.io/docs/SWC-117[117]
 |Signature Malleability
 |
 |
 
-|https://swcregistry.io/docs/SWC-118[SWC-118]
+|https://swcregistry.io/docs/SWC-118[118]
 |Incorrect Constructor Name
 |++
 |Constructors in ink! must be explicitly flagged with `#[ink(constructor)]`
 
-|https://swcregistry.io/docs/SWC-119[SWC-119]
+|https://swcregistry.io/docs/SWC-119[119]
 |Shadowing State Variables
 |+
 |All state variables need to be stored in the storage struct and there can only be one storage struct per contract. They can then be accessed by `self.variable_name` which makes it unlikely to confuse them with local variables.
 
-|https://swcregistry.io/docs/SWC-120[SWC-120]
+|https://swcregistry.io/docs/SWC-120[120]
 |Weak Sources of Randomness from Chain Attributes
 |(?)o
 |Not sure about randomness in ink!/Substrate being more secure?
 
-|https://swcregistry.io/docs/SWC-121[SWC-121]
+|https://swcregistry.io/docs/SWC-121[121]
 |Missing Protection against Signature Replay Attacks
 |(?)o
 |Can be problematic ink! as well (?)
 
-|https://swcregistry.io/docs/SWC-122[SWC-122]
+|https://swcregistry.io/docs/SWC-122[122]
 |Lack of Proper Signature Verification
 |(?)o
 |Can be problematic ink! as well (?)
 
-|https://swcregistry.io/docs/SWC-123[SWC-123]
+|https://swcregistry.io/docs/SWC-123[123]
 |Requirement Violation
 |?
 |Not clear if we have analogy of `assert` and `require` in ink!
 
-|https://swcregistry.io/docs/SWC-124[SWC-124]
+|https://swcregistry.io/docs/SWC-124[124]
 |Write to Arbitrary Storage Location
 |++
 |Rust/ink! is a memory safe language, writing to an arbitrary location in storage is not possible
 
-|https://swcregistry.io/docs/SWC-125[SWC-125]
+|https://swcregistry.io/docs/SWC-125[125]
 |Incorrect Inheritance Order
 |(?)+
 |ink!/Rust has no inheritance but traits. 
 
-|https://swcregistry.io/docs/SWC-126[SWC-126]
+|https://swcregistry.io/docs/SWC-126[126]
 |
 |
 |
 
-|https://swcregistry.io/docs/SWC-127[SWC-127]
+|https://swcregistry.io/docs/SWC-127[127]
 |Arbitrary Jump with Function Type Variable
 |(?)+
 |We don't have function type variables in ink! Neither assembly code. Can we execute unsafe code?
 
-|https://swcregistry.io/docs/SWC-128[SWC-128]
+|https://swcregistry.io/docs/SWC-128[128]
 |Typographical Error
 |+
 |Not possible in ink!/Rust, no unary `+` operator.
 
-|https://swcregistry.io/docs/SWC-129[SWC-129]
+|https://swcregistry.io/docs/SWC-129[129]
 |
 |
 |
 
-|https://swcregistry.io/docs/SWC-130[SWC-130]
+|https://swcregistry.io/docs/SWC-130[130]
 |
 |
 |
 
-|https://swcregistry.io/docs/SWC-130[SWC-131]
+|https://swcregistry.io/docs/SWC-130[131]
 |Presence of unused variables
 |+
 |Cargo contract throws a warning when compiling an ink! Smart Contract with unused variables.
 
-|https://swcregistry.io/docs/SWC-130[SWC-132]
+|https://swcregistry.io/docs/SWC-130[132]
 |Unexpected Ether balance
 |++
 |It is not possible to forcibly send a balance to a ink! Smart Contract
 
-|https://swcregistry.io/docs/SWC-130[SWC-133]
+|https://swcregistry.io/docs/SWC-130[133]
 |Hash Collisions With Multiple Variable Length Arguments
 |+
 |The ink! env functions `hash_bytes` and `hash_encoded` can receive only on array as input which creates a better awareness of the issue.
 
-|https://swcregistry.io/docs/SWC-130[SWC-134]
+|https://swcregistry.io/docs/SWC-130[134]
 |Message call with hardcoded gas amount
 |
 |
 
-|https://swcregistry.io/docs/SWC-130[SWC-135]
+|https://swcregistry.io/docs/SWC-130[135]
 |Code With No Effects
 |+
 |Cargo contract/ink! throws a warning when compiling effect-free code.
 
-|https://swcregistry.io/docs/SWC-130[SWC-136]
+|https://swcregistry.io/docs/SWC-130[136]
 |Unencrypted Private Data On-Chain
 |o
 |Applies to ink! as well.
