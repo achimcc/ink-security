@@ -101,8 +101,8 @@ Content entered directly below the header but before the first section heading i
 
 |https://swcregistry.io/docs/SWC-117[117]
 |Signature Malleability
-|
-|
+|?
+|Currently not clear, if we have cryptography features available in ink!?
 
 |https://swcregistry.io/docs/SWC-118[118]
 |Incorrect Constructor Name
@@ -145,9 +145,9 @@ Content entered directly below the header but before the first section heading i
 |ink!/Rust has no inheritance but traits. 
 
 |https://swcregistry.io/docs/SWC-126[126]
-|
-|
-|
+|Insufficient Gas Griefing
+|?
+|If we forward calls to other contracts, how is the total amount of required gas calculated? Would https://consensys.github.io/smart-contract-best-practices/known_attacks/#insufficient-gas-griefing[gas griefing] attacks be possible?
 
 |https://swcregistry.io/docs/SWC-127[127]
 |Arbitrary Jump with Function Type Variable
