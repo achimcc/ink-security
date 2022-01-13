@@ -147,7 +147,7 @@ Content entered directly below the header but before the first section heading i
 |https://swcregistry.io/docs/SWC-126[126]
 |Insufficient Gas Griefing
 |?
-|If we forward calls to other contracts, how is the total amount of required gas calculated? Would https://consensys.github.io/smart-contract-best-practices/known_attacks/#insufficient-gas-griefing[gas griefing] attacks be possible?
+|If we forward calls to other contracts using `ink_env::call::build_call::<ink_env::DefaultEnvironment>()`, how is the total amount of required gas calculated? Would https://consensys.github.io/smart-contract-best-practices/known_attacks/#insufficient-gas-griefing[gas griefing] attacks be possible?
 
 |https://swcregistry.io/docs/SWC-127[127]
 |Arbitrary Jump with Function Type Variable
@@ -155,14 +155,14 @@ Content entered directly below the header but before the first section heading i
 |We don't have function type variables in ink! Neither assembly code. Can we execute unsafe code?
 
 |https://swcregistry.io/docs/SWC-128[128]
-|Typographical Error
-|+
-|Not possible in ink!/Rust, no unary `+` operator.
+|DoS With Block Gas Limit
+|
+|
 
 |https://swcregistry.io/docs/SWC-129[129]
-|
-|
-|
+|Typographical Error
+|++
+|Those types of typographycal errors are not possible in ink!/Rust, we don't have a unary `+` operator and especially can not confuse `+=` with `=+`.
 
 |https://swcregistry.io/docs/SWC-130[130]
 |
