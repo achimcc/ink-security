@@ -165,9 +165,9 @@ Content entered directly below the header but before the first section heading i
 |Those types of typographycal errors are not possible in ink!/Rust, we don't have a unary `+` operator and especially can not confuse `+=` with `=+`.
 
 |https://swcregistry.io/docs/SWC-130[130]
-|
-|
-|
+|Right-To-Left-Override control character (U+202E)
+|++
+|Cargo contract/rustc comp[iler doesn't allow the usage of code formating control characters.]
 
 |https://swcregistry.io/docs/SWC-130[131]
 |Presence of unused variables
