@@ -32,7 +32,7 @@ Content entered directly below the header but before the first section heading i
 |https://swcregistry.io/docs/SWC-103[103]
 |Floating Pragma
 |o
-|(?) ink! dependencies can have floating versions
+|ink! dependencies can have floating versions
 
 |https://swcregistry.io/docs/SWC-104[104]
 |Unchecked Call Return Value
@@ -141,8 +141,8 @@ Content entered directly below the header but before the first section heading i
 
 |https://swcregistry.io/docs/SWC-125[125]
 |Incorrect Inheritance Order
-|(?)+
-|ink!/Rust has no inheritance but traits. 
+|++
+|ink!/Rust has no inheritance but traits. It would be possible that an object implement two different traits with overlapping method names. But in this case the compiler will thhrow an error and force the user to disambiguate upon the desired trait method.
 
 |https://swcregistry.io/docs/SWC-126[126]
 |Insufficient Gas Griefing
@@ -186,8 +186,8 @@ Content entered directly below the header but before the first section heading i
 
 |https://swcregistry.io/docs/SWC-134[134]
 |Message call with hardcoded gas amount
-|
-|
+|++
+|We don't have those legacy issues with functions forwarding a hardocoded amount of gas in ink!.
 
 |https://swcregistry.io/docs/SWC-135[135]
 |Code With No Effects
@@ -197,7 +197,7 @@ Content entered directly below the header but before the first section heading i
 |https://swcregistry.io/docs/SWC-136[136]
 |Unencrypted Private Data On-Chain
 |o
-|Applies to ink! as well.
+|Applies to ink! as well, unencrypted data on chain can be read.
 
 |====
 
