@@ -169,32 +169,32 @@ Content entered directly below the header but before the first section heading i
 |++
 |Cargo contract/rustc comp[iler doesn't allow the usage of code formating control characters.]
 
-|https://swcregistry.io/docs/SWC-130[131]
+|https://swcregistry.io/docs/SWC-131[131]
 |Presence of unused variables
 |+
 |Cargo contract throws a warning when compiling an ink! Smart Contract with unused variables.
 
-|https://swcregistry.io/docs/SWC-130[132]
+|https://swcregistry.io/docs/SWC-132[132]
 |Unexpected Ether balance
 |++
 |It is not possible to forcibly send a balance to a ink! Smart Contract
 
-|https://swcregistry.io/docs/SWC-130[133]
+|https://swcregistry.io/docs/SWC-133[133]
 |Hash Collisions With Multiple Variable Length Arguments
 |+
 |The ink! env functions `hash_bytes` and `hash_encoded` can receive only on array as input which creates a better awareness of the issue.
 
-|https://swcregistry.io/docs/SWC-130[134]
+|https://swcregistry.io/docs/SWC-134[134]
 |Message call with hardcoded gas amount
 |
 |
 
-|https://swcregistry.io/docs/SWC-130[135]
+|https://swcregistry.io/docs/SWC-135[135]
 |Code With No Effects
 |+
 |Cargo contract/ink! throws a warning when compiling effect-free code.
 
-|https://swcregistry.io/docs/SWC-130[136]
+|https://swcregistry.io/docs/SWC-136[136]
 |Unencrypted Private Data On-Chain
 |o
 |Applies to ink! as well.
