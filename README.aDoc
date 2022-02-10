@@ -52,7 +52,7 @@ Content entered directly below the header but before the first section heading i
 |https://swcregistry.io/docs/SWC-107[107]
 |Reentrancy
 |+
-|-> See bleow 
+| <<107,See below for details>>
 
 |https://swcregistry.io/docs/SWC-108[108]
 |State Variable Default Visibility
@@ -77,7 +77,7 @@ Content entered directly below the header but before the first section heading i
 |https://swcregistry.io/docs/SWC-112[112]
 |Delegatecall to Untrusted Callee
 |+
-|In ink!, we can define the analogy of a Solidity fallback function by assigning an ink! function the wildcard selector. We have `ink_env::call::build_call::<ink_env::DefaultEnvironment>()` in ink!, calling into untrusted code should be voided here as well. However, we have much more control over the delegate call setup.
+|<<112,See SWC-112 below for details>>
 
 |https://swcregistry.io/docs/SWC-113[113]
 |DoS with Failed Call
@@ -203,17 +203,21 @@ Content entered directly below the header but before the first section heading i
 
 === Detailed explanations:
 
-==== SWC-107 Re-entracy
+==== [#107]#SWC-107 Re-entracy#
 
 The classic attack vector in Solidity Smart Contracts is a malicious Smart Contract which receives Ether from the attacked contract. Due to this receival, its fallback function gets executed. This allows an attacking contract to call back into the calling contract and invoke further contract calls there which get executed before the control flow of the calling contract finishes.
 
 In ink!, balance transfers are handled by calls into pallet assets, and they are not accompanied by invoking functions in the target contract. However, we could also send balance as part of a function call. This would be done in ink! by invoking a cross contract call and in theory, the called contract could try to call back into the calling one. But by default, calling back into the calling contract is disabled by the corresponding callflag in ink!, so that this attack scenario would only be possible when explicitly allowing re-entrancy in cross contract calls.   
 
+==== [#112]#SWC-112 Delegatecall#
+
+Delegatecalls are https://github.com/paritytech/substrate/pull/10617[WIP] in ink! However, in Solidity this attack vector arises from calling into another contract and exposing its execution context to the calling contract. Which
+
 == Solidity Security Blog
 
 1. https://github.com/sigp/solidity-security-blog#reentrancy[Re-Entrancy]
 
-- See SWC-107 above.
+- See SWC-107 <<107, above>>.
 
 2. https://github.com/sigp/solidity-security-blog#ouflow[Arithmetic Over/Under Flows]
 
